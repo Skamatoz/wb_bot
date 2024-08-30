@@ -2,13 +2,13 @@ const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api'); // Библиотека для работы с Telegram Bot API
 
 // Вводные данные
-const TELEGRAM_BOT_TOKEN = '7088533899:AAH2xVh85SQ-E54B29udN013d6lXzVRKcS8';
-const TELEGRAM_CHAT_ID = '-4561945946';
+const TELEGRAM_BOT_TOKEN = '1452701861:AAGlAsFmU70vK06BqoiiOpEpR09MBeQCYtA';
+const TELEGRAM_CHAT_ID = '-1001177909512';
 
 const url = 'https://supplies-api.wildberries.ru/api/v1/acceptance/coefficients';
 const options = {
   headers: {
-    'Authorization': 'eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwMjQwODAxdjEiLCJ0eXAiOiJKV1QifQ.eyJlbnQiOjEsImV4cCI6MTczOTQwNzE3NywiaWQiOiIyOWQ2OThjMS01NGYxLTQ2ZjUtOTRhNS1hMDlhOWYwZWZmZjkiLCJpaWQiOjM5ODMxMDM5LCJvaWQiOjUzNDI3MSwicyI6MTA3Niwic2lkIjoiNDVhZWYzZTUtYWRkMy00NmY4LTk1YWYtNWY5ZWM4YTJjYmMxIiwidCI6ZmFsc2UsInVpZCI6Mzk4MzEwMzl9.q8O0PlFg19FfgIOYybBSPM9v5YQf6r85rSQtCwiZxkEFOQAFI48Js-tM7Igil_K1KdqDt000EXEUgAaYeNbUIA'
+    'Authorization': 'eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwMjQwODE5djEiLCJ0eXAiOiJKV1QifQ.eyJlbnQiOjEsImV4cCI6MTc0MDQ1NTUxNywiaWQiOiI1N2I0NDE3Yi0zMmRjLTQwYTYtYTdmNC04M2Y5ZmJkMGFlMzAiLCJpaWQiOjEyNzQyMzM5OSwib2lkIjozOTQwMjA1LCJzIjoxMDI0LCJzaWQiOiI0MGE2YTFhZi00ZWIzLTQ5NmEtOGNmNC0xZWVjODg4ZjQ1YjQiLCJ0IjpmYWxzZSwidWlkIjoxMjc0MjMzOTl9.9A6g0KZxCkqAr2DH3PvzfeB9RNovUv5fYI3mIOUhAmFbDcaTZTxhISEhDRxP8Mu5v0nGSgXwHhFE_Pa5zttqPQ'
   }
 };
 
@@ -30,6 +30,14 @@ const bot = new TelegramBot(TELEGRAM_BOT_TOKEN);
 // Обработчик ошибок
 function handleError(error) {
   console.error('Error:', error.message || error);
+}
+
+// Функция для форматирования даты
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0'); // Получаем день
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Получаем месяц (январь - 0, поэтому +1)
+  return `${day}.${month}`; // Возвращаем дату в формате ДД.ММ
 }
 
 // Функция для обработки и отправки данных
@@ -56,9 +64,12 @@ async function fetchAndSend() {
       // Проверка на уникальность
       if (!uniqueEntries.has(entryKey)) {
         uniqueEntries.add(entryKey);
+
+        const formattedDate = formatDate(item.date); // Форматирование даты
+
         messages.push(
           `Есть свободный слот!\n` +
-          `Дата: ${item.date}\n` +
+          `Дата: ${formattedDate}\n` +  // Использование отформатированной даты
           `Коэффициент: ${item.coefficient}\n` +
           `Склад: ${item.warehouseName}\n` +
           `Тип поставки: ${item.boxTypeName}`
