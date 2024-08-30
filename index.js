@@ -1,7 +1,7 @@
 const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api'); // Библиотека для работы с Telegram Bot API
 
-// Вводные данные
+// Вводные данные(Спец обновление)
 const TELEGRAM_BOT_TOKEN = '1452701861:AAGlAsFmU70vK06BqoiiOpEpR09MBeQCYtA';
 const TELEGRAM_CHAT_ID = '-1001177909512';
 
